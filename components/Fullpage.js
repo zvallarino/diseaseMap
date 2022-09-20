@@ -11,12 +11,13 @@ function Fullpage() {
     const list_of_diseases = ["E.Coli","Chlamydia","Syphilis","HIV","Polio","Malaria","Tuberculosis","Influenza","Monkey Pox"]
     const [graphDisplay, setShowGraph] = useState(false)
     const [graphTrends, setGraphTrends] = useState(false)
+    const [dataset, setDateSet] = useState([])
 
     
 
   return (
     <>
-        <GraphContext.Provider value = {{list_of_diseases,graphDisplay,setShowGraph,graphTrends,setGraphTrends}}>
+        <GraphContext.Provider value = {{list_of_diseases,graphDisplay,setShowGraph,graphTrends,setGraphTrends, setDateSet, dataset }}>
             <Header />
             <Dashboard />
         </GraphContext.Provider>

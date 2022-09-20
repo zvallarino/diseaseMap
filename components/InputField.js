@@ -2,6 +2,9 @@
 import { DateTime } from 'luxon';
 import moment from 'moment';
 import React, { useState } from 'react'
+import { useContext } from "react";
+import { GraphContext } from '../contexts/GraphContext';
+
 
 function InputField() {
 
@@ -11,11 +14,9 @@ function InputField() {
         return result
     }
 
+    const { setDateSet } = useContext(GraphContext)
+
     const [inputs, setInputs] = useState({});
-
-    let practiceStartDate = "08/20"
-
-    let practiceEndDate = "09/22"
 
     const handleChange = (event) => {
       const name = event.target.name;
@@ -23,10 +24,47 @@ function InputField() {
       setInputs(values => ({...values, [name]: value}))
     }
 
+    const validations = (obj) =>{
+        for (const property in obj) {
+            if(!checkDate(obj[property])){
+                alert(`${property} is not in the correct format`)
+                return true
+            }else if(handleSlash(obj[property])){
+                alert(`We do not have data before 2017, please input a different date`)
+                return true
+            }
+        }
+    }
+
+    const copyOfState = (obj) => {
+        return {...obj}
+    }
+
+    const secondValidations = (obj) => {
+        for (const property in obj) {
+            obj[property] = converter(obj[property])
+        }
+        return obj
+    }
+
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if(validations(inputs)){
+            return
+        }
+        const copyState = copyOfState(inputs)
+        copyState = secondValidations(copyState)
+        console.log(differenceInMonths(copyState))
+        console.log(copyState.startDate.toLocaleString({ month: 'short', year: 'numeric' }))
+        setDateSet(daterange(copyState.startDate,differenceInMonths(copyState)))
+      }
+
+
+
+
     const handleSlash = (str) => {
         const v = str.split("/")
-        console.log(v)
-        console.log(v)
 
         if(v[1].length == 2){
            return parseInt(v[1])<17
@@ -37,22 +75,11 @@ function InputField() {
          }
     }
 
-    const checkStartAndEnd = (start,end) =>{
-        console.log(start)
-        console.log(end)
-
-        start = converter(start)
-        end = converter(end)
-        start = converterTwo(start)
-        end = converterTwo(end)
-
-        return (start > end)
-
-      
-        const diffInMonths = end.diff(start, 'months');
-        console.log(diffInMonths.values.months)
-
-             }
+    const differenceInMonths = (obj) => {
+        const diffInMonths = obj.endDate.diff(obj.startDate, 'months');
+        return diffInMonths.toObject();
+  
+    }
 
     const monthCheck = (month) => {
         if(month.length == 1){
@@ -75,29 +102,22 @@ function InputField() {
         const dateZ = date.split("/")
         dateZ[0] = monthCheck(dateZ[0])
         dateZ[1] = yearCheck(dateZ[1])
-        return dateZ
+        return DateTime.fromISO(`${dateZ[1]}-${dateZ[0]}-01`);
     }
 
-    const converterTwo = (date) =>{
-        return date = DateTime.fromISO(`${date[1]}-${date[0]}-01`);
+    const daterange = (startdate,difference) =>{
+        let i = 0;
+        console.log(difference)
+        const arrayZ = []
+        while(i < difference.months){
+
+            arrayZ.push(startdate.plus({months:i}).toLocaleString({ month: 'short', year: 'numeric' }))
+            i++
+        }
+
+        return arrayZ
     }
 
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        if(!checkDate(inputs.startDate)){
-            alert("Start date is not in the correct format")
-        } else if (!checkDate(inputs.endDate)){
-            alert("End date is not in the correct format")
-        } else if(handleSlash(inputs.startDate)){
-            alert("Date needs to be past 2017")
-        } else if(checkStartAndEnd(practiceStartDate,practiceEndDate)){
-            alert("Start Date is after End Date")
-        }
-        else {
-            alert("Correct Everything")
-        }
-      }
 
   return (
     <div className="w-72">
