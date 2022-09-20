@@ -12,6 +12,8 @@ import {
 } from "chart.js"
 import { Bar, Line, Scatter, Bubble } from "react-chartjs-2"
 import moment from 'moment';
+import { useState, useContext } from "react";
+import { GraphContext } from '../contexts/GraphContext';
 
 ChartJS.register(
     CategoryScale,
@@ -26,6 +28,9 @@ ChartJS.register(
 );
 
 function Graph() {
+
+  const { dataset } = useContext(GraphContext)
+
 
   const data_sets = [ {
     label: 'Polio Case Count',
@@ -64,20 +69,12 @@ function monthDiff(dateFrom, dateTo) {
    (12 * (dateTo.getFullYear() - dateFrom.getFullYear()))
 }
 
-console.log(monthDiff(new Date(2020,11),new Date(2022,0)))
+// console.log(monthDiff(new Date(2020,11),new Date(2022,0)))
 
-console.log(new Date())
+// console.log(new Date())
 
 
-  const date_filter = [
-        moment(new Date(year_filter, 0)).format('YYYY-MM'),
-        moment(new Date(year_filter, 1)).format('YYYY-MM'),
-        moment(new Date(year_filter, 2)).format('YYYY-MM'),
-        moment(new Date(year_filter, 3)).format('YYYY-MM'),
-        moment(new Date(year_filter, 4)).format('YYYY-MM'),
-        moment(new Date(year_filter, 5)).format('YYYY-MM'),
-        moment(new Date(year_filter, 6)).format('YYYY-MM'),
-  ]
+  const date_filter = dataset
   
   const data = {
     labels: date_filter,
