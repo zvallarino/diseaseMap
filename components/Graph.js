@@ -27,7 +27,6 @@ ChartJS.register(
 
 function Graph() {
 
-
   const data_sets = [ {
     label: 'Polio Case Count',
     data: [12, 18, 22, 33, 44, 55, 22, 77],
@@ -56,8 +55,18 @@ function Graph() {
     fill: false,
     borderColor: 'purple'
   },]
-
   const year_filter = 2021
+  const month_start = 12
+  const month_end = 5
+
+function monthDiff(dateFrom, dateTo) {
+ return dateTo.getMonth() - dateFrom.getMonth() + 
+   (12 * (dateTo.getFullYear() - dateFrom.getFullYear()))
+}
+
+console.log(monthDiff(new Date(2020,11),new Date(2022,0)))
+
+console.log(new Date())
 
 
   const date_filter = [
@@ -81,6 +90,12 @@ function Graph() {
         mode: 'index',
         intersect: false,
       },
+      layout: {
+        padding: {
+            top: 0
+        }
+    },
+      
     plugins: {
         legend: {
             display: true,
@@ -117,8 +132,7 @@ function Graph() {
 
   return (
     <div>
-        <canvas id="myChart"></canvas>
-        <Line data = {data} width = {100} height = {40} options={options}/>
+        <Line data = {data} width = {200} height = {100} options={options}/>
     </div>
   )
 }

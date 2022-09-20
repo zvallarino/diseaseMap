@@ -5,6 +5,7 @@ const nextConfig = {
   images: {
     domains: [
       "upload.wikimedia.org",
+      "www.popcouncil.org",
     ],
   },
   

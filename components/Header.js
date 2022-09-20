@@ -3,22 +3,23 @@ import Image from 'next/image'
 
 function Header() {
   return (
-    <div> 
-        <div className = 'flex border border-8 border-purple-500'>
-          <div className = "border border-8 border-red-500">
+    <> 
+      
+          <div className = "border border-8 border-purple-400 col-start-2 col-span-1">
               <Image
-              src = "https://upload.wikimedia.org/wikipedia/commons/c/c2/Population_Council_Logo.png"
+              src = "https://www.popcouncil.org/assets/img/about/pc-brand.png"
               alt="Picture of the author"
-              width={200}
-              height={200}
+              width={175}
+              height={175}
               />
           </div>
-         <div className="flex-1 border border-8 border-green-500">
-              <div className='flex items-center justify-center border border-4 border-blue-400 h-1/2'>Population Council</div>
-              <div className='flex items-center justify-center border border-4 border-blue-400 h-1/2'>Infection Disease Tracker</div>
+
+         <div className=" border border-8 border-blue-400 col-start-3 col-span-3">
+                <div className=' border border-4 border-blue-400 h-1/2 text-center text-6xl'>Population Council</div>
+                <div className='border border-4 border-blue-400 h-1/2  text-center text-4xl'>Infection Disease Tracker</div>
          </div>
-        </div>
-    </div>
+
+    </>
   )
 }
 
