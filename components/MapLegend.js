@@ -2,10 +2,11 @@ import React from 'react'
 import { useState, useContext } from "react";
 import { GraphContext } from '../contexts/GraphContext';
 import InputField from './InputField';
+import CheckBox from './CheckBox';
 
 function MapLegend() {
 
-  const { setGraphTrends,list_of_diseases } = useContext(GraphContext)
+  const { setGraphTrends,ALL_DISEASES } = useContext(GraphContext)
   const list_of_times = [[1,"3 Months"],[2,"6 Months"],[3,"1 Year"],[4, "2 Years"],[5, "5 Years"],[6,"All"]]
 
   return (
@@ -23,17 +24,16 @@ function MapLegend() {
         
         <div className='font-bold'>Disease</div>
           <ul>
-            {list_of_diseases.map(disease => <li>{" · "}{disease}</li>)}
-          </ul>
-        <div className='font-bold'>Timeframe</div>
-          <ul>
-            {list_of_times.map(time => <li>{" · "}{time[1]}</li>)}
+            {ALL_DISEASES.map((disease,index) => <CheckBox index ={index} item = {disease} type = {"disease"}/>)}
           </ul>
 
-        <div className='font-bold'>
-          Air Travel
-        </div>
-        <ul>{" · "}Yes</ul>
+        <div className='font-bold'>Timeframe</div>
+          <ul>
+            {list_of_times.map((time,index) => <CheckBox index ={index} item = {time} type = {"time"}/>)}
+          </ul>
+
+        <div className='font-bold'>Air Travel</div>
+          <CheckBox index = {0} item = {"Show Air Travel"} type ={"air"} />
         <InputField />
       </div >
     </>

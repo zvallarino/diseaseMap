@@ -55,8 +55,6 @@ function InputField() {
         }
         const copyState = copyOfState(inputs)
         copyState = secondValidations(copyState)
-        console.log(differenceInMonths(copyState))
-        console.log(copyState.startDate.toLocaleString({ month: 'short', year: 'numeric' }))
         setDateSet(daterange(copyState.startDate,differenceInMonths(copyState)))
       }
 
@@ -110,11 +108,9 @@ function InputField() {
         console.log(difference)
         const arrayZ = []
         while(i < difference.months){
-
             arrayZ.push(startdate.plus({months:i}).toLocaleString({ month: 'short', year: 'numeric' }))
             i++
         }
-
         return arrayZ
     }
 

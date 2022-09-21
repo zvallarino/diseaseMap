@@ -11,12 +11,6 @@ function Dashboard() {
     const [graphTrends, setGraphTrends] = useState(false)
     const { graphDisplay } = useContext(GraphContext)
 
-    //Pull Data
-    const stepOneRef = collection(db,"diseases")
-    const [allData] = useCollection(stepOneRef)
-    const recipient = allData?.docs.map(doc => doc.data())
-    //Pull Data
-
 
   return (
     <>
