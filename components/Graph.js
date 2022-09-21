@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -14,6 +14,9 @@ import { Bar, Line, Scatter, Bubble } from "react-chartjs-2"
 import moment from 'moment';
 import { useState, useContext } from "react";
 import { GraphContext } from '../contexts/GraphContext';
+import { DateTime } from 'luxon';
+import BackLogic from './BackLogic';
+import Seeding from './Seeding';
 
 ChartJS.register(
     CategoryScale,
@@ -29,7 +32,33 @@ ChartJS.register(
 
 function Graph() {
 
-  const { dataset } = useContext(GraphContext)
+  const { dataset, alldisease, graphStartDate, graphEndDate, alldata} = useContext(GraphContext)
+
+  const all_disease_names = alldisease
+  const copy = [...graphStartDate]
+ 
+  useEffect(()=>{
+    
+  },[])
+
+  const end_date_example = DateTime.now()
+  const start_date_example = DateTime.now().minus({years:1}) 
+
+
+  const rangeGenerator = (startDate, EndDate) => {
+  const difference = Math.floor((EndDate.diff(startDate,"months").toObject()).months)
+  let i = 0
+  let ranger = []
+  while (i < difference){
+    ranger.push(startDate.plus({months:i}).toLocaleString({ month: 'short', year: 'numeric' }))
+    i++
+  }
+  return ranger
+  }
+
+  const dataFunction = () => {
+
+  }
 
 
   const data_sets = [ {
@@ -60,9 +89,8 @@ function Graph() {
     fill: false,
     borderColor: 'purple'
   },]
-  const year_filter = 2021
-  const month_start = 12
-  const month_end = 5
+
+
 
 function monthDiff(dateFrom, dateTo) {
  return dateTo.getMonth() - dateFrom.getMonth() + 
@@ -74,7 +102,7 @@ function monthDiff(dateFrom, dateTo) {
 // console.log(new Date())
 
 
-  const date_filter = dataset
+  const date_filter = rangeGenerator(start_date_example,end_date_example)
   
   const data = {
     labels: date_filter,
@@ -130,6 +158,8 @@ function monthDiff(dateFrom, dateTo) {
   return (
     <div>
         <Line data = {data} width = {200} height = {100} options={options}/>
+        <BackLogic />
+        <Seeding />
     </div>
   )
 }
