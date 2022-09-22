@@ -21,21 +21,22 @@ function Seeding() {
     const differenceInMonths = Math.floor(difference.months)
     const all_diseases = ["E.Coli","Chlamydia","HIV"]
     let i = 0
+    let j = 0
     let batchTest = []
 
-    while(i < all_diseases.length){
-      console.log(all_diseases[i])
+   for(const disease in all_diseases){
+    while(i < differenceInMonths){
+     const obj = 
+     {
+      "name":all_diseases[disease],
+      "case_count":getRandomInt(0,150),
+      "date":firstDate.plus({month:i}).toISO()
     }
-
-    // while(i<differenceInMonths){
-    //   for(const element in all_diseases){
-    //     batchTest.push({
-    //      "name":all_diseases[element],
-    //      "case_count":getRandomInt(0,150), 
-    //      "date":firstDate.plus({months: i}).toISO()})
-    //   }
-    //   i++
-    // }
+    batchTest.push(obj)
+    i++
+    }  
+    i = 0 
+   }
 
     // const batch = writeBatch(db);
     //     batchTest.forEach((item) => {
@@ -43,9 +44,9 @@ function Seeding() {
     //       batch.set(docRef, item)
     //     });
         
-        // batch.commit();
+    //     batch.commit();
 
-        console.log(batchTest)
+        // console.log(batchTest)
   }
 
   useEffect(() => {dateMaker()}, [])

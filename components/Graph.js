@@ -17,6 +17,7 @@ import { GraphContext } from '../contexts/GraphContext';
 import { DateTime } from 'luxon';
 import BackLogic from './BackLogic';
 import Seeding from './Seeding';
+import {HIV_OBJECT, ECOLI_OBJECT, FINAL_OBJECT} from "./DummyData"
 
 ChartJS.register(
     CategoryScale,
@@ -32,10 +33,10 @@ ChartJS.register(
 
 function Graph() {
 
-  const { dataset, alldisease, graphStartDate, graphEndDate, alldata} = useContext(GraphContext)
+  const { alldisease, graphStartDate} = useContext(GraphContext)
 
-  const all_disease_names = alldisease
-  const copy = [...graphStartDate]
+  const diseaseExample = FINAL_OBJECT
+  
  
   useEffect(()=>{
     
@@ -43,7 +44,6 @@ function Graph() {
 
   const end_date_example = DateTime.now()
   const start_date_example = DateTime.now().minus({years:1}) 
-
 
   const rangeGenerator = (startDate, EndDate) => {
   const difference = Math.floor((EndDate.diff(startDate,"months").toObject()).months)
@@ -56,39 +56,64 @@ function Graph() {
   return ranger
   }
 
-  const dataFunction = () => {
-
+  const uniqueDiseases = (arr) => {
+    const answer = []
+    for(let i = 0; i<arr.length;i++){
+      if(!(answer.includes(arr[i].name))){
+        answer.push(arr[i].name)
+      }
+    }
+    return answer
   }
 
+  const dataSort = (arr) => {
+    const newObject = {}
+    for(let i = 0; i<arr.length; i++){
+      if(newObject[arr[i].name]){
+        newObject[arr[i].name].push({
+          x:arr[i].time, y:arr[i].case_count
+        })
+      }else{
+        newObject[arr[i].name] = [{
+          x:arr[i].time, y:arr[i].case_count
+        }]
+      }
+    }
+    return (newObject)
+  }
 
-  const data_sets = [ {
-    label: 'Polio Case Count',
-    data: [12, 18, 22, 33, 44, 55, 22, 77],
-    borderWidth: 1,
-    fill: false,
-    borderColor: 'red'
-  },
-  {
-    label: 'Malaria Case Count',
-    data: [12, 2, 13,40,50,40,20,20],
-    borderWidth: 1,
-    fill: false,
-    borderColor: 'green'
-  },
-  {
-    label: 'Tuberculosis Case Count',
-    data: [14, 17, 16, 15, 13, 9, 6, 2],
-    borderWidth: 1,
-    fill: false,
-    borderColor: 'orange'
-  },
-  {
-    label: 'Monkey Pox Case Count',
-    data: [20, 19, 13, 12, 8, 6, 8, 9],
-    borderWidth: 1,
-    fill: false,
-    borderColor: 'purple'
-  },]
+  const data_setter = (obj) => {
+    const color = ["red", "blue", "green"]
+    let i = 0
+    const answer = []
+    for(const property in obj){
+     const newObject = 
+      {
+        "label":property,
+        "data":obj[property],
+        "borderWidth": 1,
+        "fill": false,
+        "borderColor": color[i]
+      }
+      i++
+      answer.push(newObject)
+    }
+    return answer
+  }
+
+  // const data_sets = [ {
+  //   label: 'Polio Case Count',
+  //   data: [{ x: '2021-11-06',
+  //   y: 50},{
+  //     x: '2021-11-07',
+  //     y: 60
+  // }, {
+  //     x: '2021-11-08',
+  //     y: 50 },],
+  //   borderWidth: 1,
+  //   fill: false,
+  //   borderColor: 'red'
+  // }]
 
 
 
@@ -101,12 +126,12 @@ function monthDiff(dateFrom, dateTo) {
 
 // console.log(new Date())
 
-
-  const date_filter = rangeGenerator(start_date_example,end_date_example)
+  const data_set = data_setter(dataSort(diseaseExample))
+  // const date_filter = rangeGenerator(start_date_example,end_date_example)
   
   const data = {
-    labels: date_filter,
-    datasets: data_sets
+    // labels: date_filter,
+    datasets: data_set
   }
 
   const options = {

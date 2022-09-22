@@ -22,9 +22,9 @@ function Fullpage() {
     const [graphEndDate, setEndDate] = useState("")
 
     //Pull Data
-        const stepOneRef = collection(db,"diseases")
-        const [allData] = useCollection(stepOneRef)
-        const alldata = allData?.docs.map(doc => doc.data())
+    const stepOneRef = collection(db,"HIV")
+    const [allData] = useCollection(stepOneRef)
+    const alldata = allData?.docs.map(doc => doc.data())    
 
      
 
